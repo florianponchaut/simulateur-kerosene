@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur économie kérosène</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 420px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+h1 {
+    font-size: 20px;
+    text-align: center;
+}
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #eef7f1;
+    border-radius: 8px;
+}
+.result p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>✈️ Simulateur d’économie de kérosène</h1>
+
+    <label>Nombre de verseuses jetées</label>
+    <input type="number" id="verseuses" value="5" min="0">
+
+    <label>Heures de vol restantes</label>
+    <input type="number" id="heures" value="8" min="0">
+
+    <label>Minutes restantes</label>
+    <input type="number" id="minutes" value="45" min="0" max="59">
+
+    <div class="result" id="resultats"></div>
+
+    <div class="footer">
+        Hypothèse : 6 cl / verseuse / heure – 2,52 kg CO₂ / L
+    </div>
+</div>
+
+<script>
+function calculer() {
+    const V = Number(document.getElementById("verseuses").value);
+    const H = Number(document.getElementById("heures").value);
+    const M = Number(document.getElementById("minutes").value);
+
+    const temps = H + M / 60;
+    const litres = (V * 6 * temps) / 100;
+    const co2 = litres * 2.52;
+    const km = co2 * 5;
+
+    document.getElementById("resultats").innerHTML = `
+        <p>⛽ <strong>${litres.toFixed(2)}</strong> litres économisés</p>
+        <p>🌍 <strong>${co2.toFixed(2)}</strong> kg de CO₂ évités</p>
+        <p>🚗 Équivalent : <strong>${km.toFixed(0)}</strong> km en voiture</p>
+    `;
+}
+
+document.querySelectorAll("input").forEach(i => i.addEventListener("input", calculer));
+calculer();
+</script>
+</body>
+</html>
